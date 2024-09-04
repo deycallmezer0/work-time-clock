@@ -6,28 +6,36 @@ import { useRouter } from 'next/navigation'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    })
+    setError('')
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
 
-    if (response.ok) {
-      const data = await response.json()
-      localStorage.setItem('user', JSON.stringify(data.user))
-      router.push('/')
-    } else {
-      // Handle error
-      console.error('Login failed')
+      if (response.ok) {
+        const data = await response.json()
+        localStorage.setItem('user', JSON.stringify(data.user))
+        router.push('/')
+      } else {
+        const errorData = await response.json()
+        setError(errorData.error || 'Login failed')
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      setError('An unexpected error occurred')
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8">
+      {error && <p className="text-red-500 mb-4">{error}</p>}
       <input
         type="email"
         value={email}
