@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongodb';
+import { connectToDatabase, closeDatabase } from '@/lib/database';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export async function POST(request) {
+  let connection;
   try {
     const { email, password } = await request.json();
-    const { db } = await connectToDatabase();
+
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+    }
+
+    connection = await connectToDatabase();
+    const { db } = connection;
     const user = await db.collection('users').findOne({ email });
 
     if (!user) {
@@ -20,14 +27,32 @@ export async function POST(request) {
     }
 
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { userId: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '1d' }
     );
 
-    return NextResponse.json({ token, user: { id: user._id, email: user.email, name: user.name } });
+    // Update last login timestamp
+    await db.collection('users').updateOne(
+      { _id: user._id },
+      { $set: { lastLogin: new Date() } }
+    );
+
+    return NextResponse.json({
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role
+      }
+    });
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  } finally {
+    if (connection) {
+      await closeDatabase();
+    }
   }
 }
