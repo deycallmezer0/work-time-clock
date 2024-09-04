@@ -1,5 +1,3 @@
-import EmployeeList from '../components/EmployeeList'
-
 import EmployeeList from '@/components/EmployeeList'
 import ReportGenerator from '@/components/ReportGenerator'
 
