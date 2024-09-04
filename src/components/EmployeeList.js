@@ -2,6 +2,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import TimeClock from './TimeClock'
 
 export default function EmployeeList() {
   const [employees, setEmployees] = useState([])
@@ -47,8 +48,7 @@ export default function EmployeeList() {
               <td>{employee.email}</td>
               <td>{employee.employeeId}</td>
               <td>
-                <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2">Clock In</button>
-                <button className="bg-red-500 text-white px-2 py-1 rounded">Clock Out</button>
+                <TimeClock employeeId={employee._id} />
               </td>
             </tr>
           ))}
