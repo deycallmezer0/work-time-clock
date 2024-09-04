@@ -48,4 +48,55 @@ export default function Login() {
       </button>
     </form>
   )
+}'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+
+export default function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const router = useRouter()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      localStorage.setItem('user', JSON.stringify(data.user))
+      router.push('/')
+    } else {
+      // Handle error
+      console.error('Login failed')
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        className="w-full p-2 mb-4 border rounded"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        className="w-full p-2 mb-4 border rounded"
+        required
+      />
+      <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
+        Login
+      </button>
+    </form>
+  )
 }
