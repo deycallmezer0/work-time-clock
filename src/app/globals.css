@@ -3,27 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #f0f2f5;
+  --text-color: #333333;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-md text-white font-semibold transition-colors duration-300;
+}
+
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-600;
+}
+
+.btn-secondary {
+  @apply bg-green-500 hover:bg-green-600;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-md p-6 mb-4;
+}
+
+.input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
 @layer utilities {
