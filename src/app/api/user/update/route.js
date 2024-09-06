@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/app/lib/mongodb';
 import { verifyToken } from '@/app/lib/auth';
-import Employee from '@/app/models/Employee';
+import Employee from '@/app/models/User';
 
 export async function PUT(request) {
   try {
@@ -19,14 +19,14 @@ export async function PUT(request) {
 
     const { hourlyRate } = await request.json();
 
-    const updatedEmployee = await Employee.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       decodedToken.userId,
       { hourlyRate },
       { new: true }
     );
 
-    if (!updatedEmployee) {
-      return NextResponse.json({ error: 'Employee not found' }, { status: 404 });
+    if (!updatedUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     return NextResponse.json({ message: 'Hourly rate updated successfully' });
