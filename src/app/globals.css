@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #3498db;
-  --secondary-color: #2ecc71;
-  --background-color: #f0f2f5;
-  --text-color: #333333;
+  --primary-color: #4a90e2;
+  --secondary-color: #50c878;
+  --background-color: #f8f9fa;
+  --text-color: #2c3e50;
 }
 
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', 'Arial', sans-serif;
 }
 
 .container {
@@ -22,23 +22,23 @@ body {
 }
 
 .btn {
-  @apply px-4 py-2 rounded-md text-white font-semibold transition-colors duration-300;
+  @apply px-4 py-2 rounded-lg text-white font-semibold transition-all duration-300 shadow-md hover:shadow-lg;
 }
 
 .btn-primary {
-  @apply bg-blue-500 hover:bg-blue-600;
+  @apply bg-blue-600 hover:bg-blue-700;
 }
 
 .btn-secondary {
-  @apply bg-green-500 hover:bg-green-600;
+  @apply bg-green-600 hover:bg-green-700;
 }
 
 .card {
-  @apply bg-white rounded-lg shadow-md p-6 mb-4;
+  @apply bg-white rounded-lg shadow-lg p-6 mb-4 transition-shadow duration-300 hover:shadow-xl;
 }
 
 .input {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300;
 }
 
 /* New styles */
