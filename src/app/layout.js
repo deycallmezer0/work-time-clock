@@ -4,8 +4,8 @@ import NavBar from './components/NavBar';
 import './globals.css';
 
 export const metadata = {
-  title: 'Work Time Clock',
-  description: 'Track your work hours and calculate your paycheck',
+  title: 'TymeKeepa',
+  description: 'Track your work hours and calculate your paycheck with TymeKeepa',
 };
 
 export function Head() {
@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
         </main>
         <footer className="bg-gray-800 text-white">
           <div className="container mx-auto py-6 px-6 text-center">
-            <p>&copy; 2024 Work Time Clock. All rights reserved.</p>
+            <p>&copy; 2024 TymeKeepa. All rights reserved.</p>
             <div className="mt-2">
               <a href="#" className="text-gray-300 hover:text-white mx-2">Privacy Policy</a>
               <a href="#" className="text-gray-300 hover:text-white mx-2">Terms of Service</a>

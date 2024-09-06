@@ -24,7 +24,7 @@ const NavBar = () => {
     <nav className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-white text-3xl font-bold hover:text-blue-200 transition-colors duration-300">
-          Work Time Clock
+          TymeKeepa
         </Link>
         <div className="space-x-6">
           {isLoggedIn ? (
