@@ -32,6 +32,9 @@ const NavBar = () => {
               <Link href="/dashboard" className="text-white hover:text-blue-200 transition-colors duration-300 font-semibold">
                 Dashboard
               </Link>
+              <Link href="/settings" className="text-white hover:text-blue-200 transition-colors duration-300 font-semibold">
+                Settings
+              </Link>
               <button onClick={handleLogout} className="text-white hover:text-blue-200 transition-colors duration-300 font-semibold">
                 Logout
               </button>
