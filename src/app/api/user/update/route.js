@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/app/lib/mongodb';
 import { verifyToken } from '@/app/lib/auth';
-import Employee from '@/app/lib/models/Employee';
+import User from '@/lib/models/User';
 
 export async function PUT(request) {
   try {
@@ -19,7 +19,7 @@ export async function PUT(request) {
 
     const { hourlyRate } = await request.json();
 
-    const updatedUser = await Employee.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       decodedToken.userId,
       { hourlyRate },
       { new: true }
