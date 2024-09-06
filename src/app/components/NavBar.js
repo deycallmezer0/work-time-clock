@@ -21,27 +21,27 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-blue-500 p-4">
+    <nav className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-2xl font-bold">
+        <Link href="/" className="text-white text-3xl font-bold hover:text-blue-200 transition-colors duration-300">
           Work Time Clock
         </Link>
-        <div className="space-x-4">
+        <div className="space-x-6">
           {isLoggedIn ? (
             <>
-              <Link href="/dashboard" className="text-white hover:text-blue-200">
+              <Link href="/dashboard" className="text-white hover:text-blue-200 transition-colors duration-300 font-semibold">
                 Dashboard
               </Link>
-              <button onClick={handleLogout} className="text-white hover:text-blue-200">
+              <button onClick={handleLogout} className="text-white hover:text-blue-200 transition-colors duration-300 font-semibold">
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="text-white hover:text-blue-200">
+              <Link href="/login" className="text-white hover:text-blue-200 transition-colors duration-300 font-semibold">
                 Login
               </Link>
-              <Link href="/register" className="text-white hover:text-blue-200">
+              <Link href="/register" className="text-white hover:text-blue-200 transition-colors duration-300 font-semibold">
                 Register
               </Link>
             </>
