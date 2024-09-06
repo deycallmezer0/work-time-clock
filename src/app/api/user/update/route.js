@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/app/lib/mongodb';
 import { verifyToken } from '@/app/lib/auth';
-import Employee from '@/app/models/User';
+import User from '@/app/models/User';
 
 export async function PUT(request) {
   try {
