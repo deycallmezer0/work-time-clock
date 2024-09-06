@@ -1,28 +1,31 @@
 // src/lib/models/Employee.js
-class Person {
-    constructor(name, email) {
-      this.name = name;
-      this.email = email;
-    }
-  }
-  
-  class Employee extends Person {
-    constructor(name, email, employeeId, hourlyRate) {
-      super(name, email);
-      this.employeeId = employeeId;
-      this.hourlyRate = hourlyRate;
-      this.timeEntries = [];
-    }
-  
-    clockIn() {
-      this.timeEntries.push({ type: 'in', time: new Date() });
-    }
-  
-    clockOut() {
-      this.timeEntries.push({ type: 'out', time: new Date() });
-    }
-  
-    calculatePay(startDate, endDate) {
-      // Implementation of pay calculation logic
-    }
-  }
+import mongoose from 'mongoose';
+
+const employeeSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  employeeId: { type: String, required: true, unique: true },
+  hourlyRate: { type: Number, required: true },
+  timeEntries: [{ 
+    type: { type: String, enum: ['in', 'out'] },
+    time: { type: Date, default: Date.now }
+  }]
+});
+
+employeeSchema.methods.clockIn = function() {
+  this.timeEntries.push({ type: 'in', time: new Date() });
+  return this.save();
+};
+
+employeeSchema.methods.clockOut = function() {
+  this.timeEntries.push({ type: 'out', time: new Date() });
+  return this.save();
+};
+
+employeeSchema.methods.calculatePay = function(startDate, endDate) {
+  // Implementation of pay calculation logic
+};
+
+const Employee = mongoose.models.Employee || mongoose.model('Employee', employeeSchema);
+
+export default Employee;
