@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/database';
-import { verifyToken } from '@/lib/auth';
-import Employee from '@/lib/models/Employee';
+import dbConnect from '@/app/lib/mongodb';
+import { verifyToken } from '@/app/lib/auth';
+import Employee from '@/app/models/Employee';
 
 export async function PUT(request) {
   try {
@@ -15,7 +15,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    await connectToDatabase();
+    await dbConnect();
 
     const { hourlyRate } = await request.json();
 
