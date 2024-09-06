@@ -19,8 +19,8 @@ export async function PUT(request) {
 
     const { hourlyRate } = await request.json();
 
-    const updatedEmployee = await Employee.findByIdAndUpdate(
-      decodedToken.userId,
+    const updatedEmployee = await Employee.findOneAndUpdate(
+      { employeeId: decodedToken.employeeId },
       { hourlyRate },
       { new: true }
     );
@@ -29,7 +29,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: 'Employee not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Hourly rate updated successfully' });
+    return NextResponse.json({ message: 'Hourly rate updated successfully', employee: updatedEmployee });
   } catch (error) {
     console.error('Error updating hourly rate:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
