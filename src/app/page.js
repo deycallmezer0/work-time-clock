@@ -10,12 +10,9 @@ const Home = () => {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      router.push('/dashboard');
-    } else {
-      router.push('/login');
-    }
+    // For the capstone project, we'll always redirect to the dashboard
+    // In a real application, you'd check for authentication here
+    router.push('/dashboard');
   };
 
   return (
