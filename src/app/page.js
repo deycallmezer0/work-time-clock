@@ -24,32 +24,32 @@ const Home = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between">
           <div className="lg:w-1/2 mb-10 lg:mb-0">
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Simplify Your Work Life with TimeTrack Pro
+              Tyme Keepa: Your Personal Time Management Assistant
             </h1>
             <p className="text-xl text-gray-600 mb-8">
-              Effortlessly track your hours, manage your schedule, and calculate your earnings with our all-in-one solution.
+              Simplify your work life with Tyme Keepa. Track hours, manage schedules, and calculate earnings effortlessly.
             </p>
             <div className="space-y-4 mb-8">
-              <FeatureItem text="Clock in and out with just one click" />
-              <FeatureItem text="View detailed work history and analytics" />
-              <FeatureItem text="Accurate paycheck calculations in real-time" />
+              <FeatureItem text="Easy time tracking with one-click clock in/out" />
+              <FeatureItem text="Comprehensive work history and insights" />
+              <FeatureItem text="Instant and accurate paycheck estimates" />
             </div>
             <div className="flex space-x-4">
               <button 
                 onClick={handleGetStarted}
-                className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
               >
-                Get Started
+                Start Tracking
               </button>
-              <Link href="/demo" className="bg-white text-cyan-500 border border-cyan-500 font-bold py-3 px-6 rounded-lg hover:bg-cyan-50 transition duration-300 ease-in-out">
-                Watch Demo
+              <Link href="/demo" className="bg-white text-indigo-600 border border-indigo-600 font-bold py-3 px-6 rounded-lg hover:bg-indigo-50 transition duration-300 ease-in-out">
+                See How It Works
               </Link>
             </div>
           </div>
           <div className="lg:w-1/2">
             <Image
               src="/hero-image.png"
-              alt="TimeTrack Pro Dashboard"
+              alt="Tyme Keepa Dashboard"
               width={600}
               height={400}
               className="rounded-lg shadow-xl"
