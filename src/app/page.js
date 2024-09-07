@@ -20,19 +20,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-red-100">
-      <nav className="bg-white shadow-md">
-        <div className="container mx-auto px-6 py-3 flex justify-between items-center">
-          <div className="flex items-center">
-            <Image src="/logo.png" alt="Tyme Keepa Logo" width={40} height={40} />
-            <span className="ml-3 text-xl font-semibold text-gray-800">Tyme Keepa</span>
-          </div>
-          <div>
-            <Link href="/login" className="text-gray-800 hover:text-purple-600 mr-4">Login</Link>
-            <button onClick={handleGetStarted} className="bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300">Get Started</button>
-          </div>
-        </div>
-      </nav>
-
       <main className="container mx-auto px-6 py-16">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-10 md:mb-0">
@@ -47,10 +34,13 @@ const Home = () => {
                 onClick={handleGetStarted}
                 className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300"
               >
-                Explore Project
+                Get Started
               </button>
               <Link href="/demo" className="bg-white text-purple-600 border-2 border-purple-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition duration-300">
                 View Demo
+              </Link>
+              <Link href="#features" className="bg-white text-purple-600 border-2 border-purple-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition duration-300">
+                Explore Features
               </Link>
             </div>
           </div>
@@ -65,7 +55,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="mt-20">
+        <div id="features" className="mt-20">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-10">Key Features of Tyme Keepa</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
