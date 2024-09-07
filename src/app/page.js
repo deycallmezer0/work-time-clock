@@ -37,7 +37,7 @@ const Home = () => {
                 Get Started
               </button>
               <Link href="/demo" className="bg-white text-purple-600 border-2 border-purple-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition duration-300" passHref>
-                View Demo
+                View Dashboard Demo
               </Link>
               <Link href="#features" className="bg-white text-purple-600 border-2 border-purple-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition duration-300">
                 Explore Features
