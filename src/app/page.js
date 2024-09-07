@@ -3,6 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 const Home = () => {
@@ -18,64 +19,55 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-        <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-          <div className="max-w-md mx-auto">
-            <div>
-              <h1 className="text-2xl font-semibold">Work Time Clock & Paycheck Calculator</h1>
+    <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-white">
+      <div className="container mx-auto px-4 py-16">
+        <div className="flex flex-col lg:flex-row items-center justify-between">
+          <div className="lg:w-1/2 mb-10 lg:mb-0">
+            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Simplify Your Work Life with TimeTrack Pro
+            </h1>
+            <p className="text-xl text-gray-600 mb-8">
+              Effortlessly track your hours, manage your schedule, and calculate your earnings with our all-in-one solution.
+            </p>
+            <div className="space-y-4 mb-8">
+              <FeatureItem text="Clock in and out with just one click" />
+              <FeatureItem text="View detailed work history and analytics" />
+              <FeatureItem text="Accurate paycheck calculations in real-time" />
             </div>
-            <div className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <p>Easily track your work hours and calculate your paycheck.</p>
-                <ul className="list-disc space-y-2">
-                  <li className="flex items-start">
-                    <span className="h-6 flex items-center sm:h-7">
-                      <svg className="flex-shrink-0 h-5 w-5 text-cyan-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </span>
-                    <p className="ml-2">Clock in and out with ease</p>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="h-6 flex items-center sm:h-7">
-                      <svg className="flex-shrink-0 h-5 w-5 text-cyan-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </span>
-                    <p className="ml-2">View your work history</p>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="h-6 flex items-center sm:h-7">
-                      <svg className="flex-shrink-0 h-5 w-5 text-cyan-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </span>
-                    <p className="ml-2">Calculate your paycheck</p>
-                  </li>
-                </ul>
-              </div>
-              <div className="pt-6 text-base leading-6 font-bold sm:text-lg sm:leading-7">
-                <button 
-                  onClick={handleGetStarted}
-                  className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                  Get Started
-                </button>
-                <p className="mt-8">
-                  Don't have an account?{' '}
-                  <Link href="/register" className="text-cyan-600 hover:text-cyan-700">
-                    Sign up
-                  </Link>
-                </p>
-              </div>
+            <div className="flex space-x-4">
+              <button 
+                onClick={handleGetStarted}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+              >
+                Get Started
+              </button>
+              <Link href="/demo" className="bg-white text-cyan-500 border border-cyan-500 font-bold py-3 px-6 rounded-lg hover:bg-cyan-50 transition duration-300 ease-in-out">
+                Watch Demo
+              </Link>
             </div>
+          </div>
+          <div className="lg:w-1/2">
+            <Image
+              src="/hero-image.png"
+              alt="TimeTrack Pro Dashboard"
+              width={600}
+              height={400}
+              className="rounded-lg shadow-xl"
+            />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+const FeatureItem = ({ text }) => (
+  <div className="flex items-center">
+    <svg className="w-6 h-6 text-cyan-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+    </svg>
+    <span className="text-gray-700">{text}</span>
+  </div>
+);
 
 export default Home;
