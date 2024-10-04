@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase, closeDatabase } from '@/lib/database';
+import { connectToDatabase, closeDatabase } from '@/app/lib/database';
 import bcrypt from 'bcryptjs';
-import { validateEmail, validatePassword } from '@/lib/validation';
+import { validateEmail, validatePassword } from '@/app/lib/validation';
 
 export async function POST(request) {
   let connection;

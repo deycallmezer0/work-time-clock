@@ -1,29 +1,34 @@
-// app/components/Search.js
 "use client"
-
 import React, { useState } from 'react';
 
 const Search = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useState({
+    startDate: '',
+    endDate: '',
+    employeeName: '',
+  });
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSearchParams(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/api/search?term=${searchTerm}`, {
+      const queryParams = new URLSearchParams(searchParams).toString();
+      const response = await fetch(`/api/search?${queryParams}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!response.ok) {
         throw new Error('Search failed');
       }
-
       const data = await response.json();
       setSearchResults(data);
     } catch (err) {
@@ -34,18 +39,45 @@ const Search = () => {
     }
   };
 
+  const calculateDuration = (clockIn, clockOut) => {
+    if (!clockOut) return 'In progress';
+    const start = new Date(clockIn);
+    const end = new Date(clockOut);
+    const durationHours = (end - start) / (1000 * 60 * 60);
+    return durationHours.toFixed(2);
+  };
+
   return (
     <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-2">Search</h2>
-      <form onSubmit={handleSearch} className="flex gap-2 mb-4">
+      <h2 className="text-xl font-semibold mb-2">Search Time Entries</h2>
+      <form onSubmit={handleSearch} className="space-y-4 mb-4">
+        <div className="flex gap-2">
+          <input
+            type="date"
+            name="startDate"
+            value={searchParams.startDate}
+            onChange={handleInputChange}
+            className="flex-grow px-3 py-2 border rounded"
+            required
+          />
+          <input
+            type="date"
+            name="endDate"
+            value={searchParams.endDate}
+            onChange={handleInputChange}
+            className="flex-grow px-3 py-2 border rounded"
+            required
+          />
+        </div>
         <input
           type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search for users or time entries"
-          className="flex-grow px-3 py-2 border rounded"
+          name="employeeName"
+          value={searchParams.employeeName}
+          onChange={handleInputChange}
+          placeholder="Employee Name (optional)"
+          className="w-full px-3 py-2 border rounded"
         />
-        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <button type="submit" className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
           Search
         </button>
       </form>
@@ -55,12 +87,12 @@ const Search = () => {
         <div>
           <h3 className="font-semibold mb-2">Search Results:</h3>
           <ul className="space-y-2">
-            {searchResults.map((result) => (
-              <li key={result._id} className="bg-gray-100 p-3 rounded">
-                <p><strong>Name:</strong> {result.name}</p>
-                <p><strong>Email:</strong> {result.email}</p>
-                {result.clockIn && <p><strong>Clock In:</strong> {new Date(result.clockIn).toLocaleString()}</p>}
-                {result.clockOut && <p><strong>Clock Out:</strong> {new Date(result.clockOut).toLocaleString()}</p>}
+            {searchResults.map((entry) => (
+              <li key={entry._id} className="bg-gray-100 p-3 rounded">
+                <p><strong>Employee:</strong> {entry.userName}</p>
+                <p><strong>Clock In:</strong> {new Date(entry.clockIn).toLocaleString()}</p>
+                <p><strong>Clock Out:</strong> {entry.clockOut ? new Date(entry.clockOut).toLocaleString() : 'Not clocked out'}</p>
+                <p><strong>Duration:</strong> {calculateDuration(entry.clockIn, entry.clockOut)} hours</p>
               </li>
             ))}
           </ul>

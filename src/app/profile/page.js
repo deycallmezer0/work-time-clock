@@ -1,46 +1,79 @@
-// app/register/page.js
+// app/profile/page.js
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-const Register = () => {
+const UserProfile = () => {
+  const [user, setUser] = useState(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [hourlyRate, setHourlyRate] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
+  const fetchUserProfile = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch('/api/user', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const userData = await res.json();
+        setUser(userData);
+        setName(userData.name);
+        setEmail(userData.email);
+        setHourlyRate(userData.hourlyRate.toString());
+      } else {
+        throw new Error('Failed to fetch user profile');
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      router.push('/login');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
+    const token = localStorage.getItem('token');
     try {
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, hourlyRate: parseFloat(hourlyRate) }),
+      const res = await fetch('/api/user', {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}` 
+        },
+        body: JSON.stringify({ name, email, hourlyRate: parseFloat(hourlyRate) }),
       });
 
-      const data = await res.json();
-
       if (res.ok) {
-        // Redirect to login page after successful registration
-        router.push('/login');
+        setSuccess('Profile updated successfully');
+        fetchUserProfile(); // Refresh user data
       } else {
-        setError(data.error || 'Registration failed');
+        const data = await res.json();
+        setError(data.error || 'Failed to update profile');
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
     }
   };
 
+  if (!user) return <div>Loading...</div>;
+
   return (
     <div className="max-w-md mx-auto mt-8">
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl mb-6 text-center">Register</h2>
+        <h2 className="text-2xl mb-6 text-center">User Profile</h2>
         {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
+        {success && <p className="text-green-500 text-xs italic mb-4">{success}</p>}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
             Name
@@ -69,20 +102,6 @@ const Register = () => {
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="password"
-            type="password"
-            placeholder="******************"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hourlyRate">
             Hourly Rate
@@ -103,7 +122,7 @@ const Register = () => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Register
+            Update Profile
           </button>
         </div>
       </form>
@@ -111,4 +130,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UserProfile;

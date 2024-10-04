@@ -1,37 +1,37 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/app/lib/mongodb';
+import User from '@/app/models/User';
 import { verifyToken } from '@/app/lib/auth';
-import Employee from '@/app/lib/models/Employee';
 
-export async function PUT(request) {
+export async function PUT(req) {
   try {
-    const token = request.headers.get('Authorization')?.split(' ')[1];
-    if (!token) {
+    await dbConnect();
+    const token = req.headers.get('Authorization')?.split(' ')[1];
+    const userId = await verifyToken(token);
+
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const decodedToken = verifyToken(token);
-    if (!decodedToken) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    const { hourlyRate } = await req.json();
+
+    if (typeof hourlyRate !== 'number' || hourlyRate <= 0) {
+      return NextResponse.json({ error: 'Invalid hourly rate' }, { status: 400 });
     }
 
-    await dbConnect();
-
-    const { hourlyRate } = await request.json();
-
-    const updatedEmployee = await Employee.findOneAndUpdate(
-      { employeeId: decodedToken.employeeId },
-      { hourlyRate },
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: { hourlyRate: hourlyRate } },
       { new: true }
-    );
+    ).select('-password');
 
-    if (!updatedEmployee) {
-      return NextResponse.json({ error: 'Employee not found' }, { status: 404 });
+    if (!updatedUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Hourly rate updated successfully', employee: updatedEmployee });
+    return NextResponse.json(updatedUser);
   } catch (error) {
-    console.error('Error updating hourly rate:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error updating user data:', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }

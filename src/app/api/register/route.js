@@ -1,64 +1,38 @@
-// File: src/app/api/register/route.js
-import { NextResponse } from 'next/server'
-import { connectToDatabase } from '../../../lib/database'
-import bcrypt from 'bcryptjs'
-import { validateEmail, validatePassword } from '../../../lib/validation'
+// app/api/register/route.js
+import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import dbConnect from '@/app/lib/mongodb';
+import User from '@/app/models/User';
 
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const { name, email, password } = await request.json()
+    await dbConnect();
 
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
-    }
+    const { name, email, password, hourlyRate } = await req.json();
 
-    if (!validateEmail(email)) {
-      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
-    }
-
-    if (!validatePassword(password)) {
-      return NextResponse.json({ error: 'Password must be at least 8 characters long' }, { status: 400 })
-    }
-
-    const db = await connectToDatabase()
-
-    const existingUser = await db.collection('users').findOne({ email })
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return NextResponse.json({ error: 'Email already exists' }, { status: 400 })
+      return NextResponse.json({ error: 'User already exists' }, { status: 400 });
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10)
-    const result = await db.collection('users').insertOne({
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create new user
+    const newUser = new User({
       name,
       email,
       password: hashedPassword,
-      role: 'employee'
-    })
+      hourlyRate,
+    });
 
-    return NextResponse.json({ message: 'User created successfully' }, { status: 201 })
+    await newUser.save();
+
+    return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
   } catch (error) {
-    console.error('Registration error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
-}import { NextResponse } from 'next/server'
-
-export async function POST(request) {
-  try {
-    const { name, email, password } = await request.json()
-
-    // Here you would typically:
-    // 1. Validate the input
-    // 2. Check if the user already exists
-    // 3. Hash the password
-    // 4. Save the user to your database
-
-    // For now, we'll just simulate a successful registration
-    console.log('Registering user:', { name, email })
-
-    // In a real application, you'd return a success message without the password
-    return NextResponse.json({ message: 'User registered successfully' }, { status: 201 })
-  } catch (error) {
-    console.error('Registration error:', error)
-    return NextResponse.json({ message: 'Registration failed' }, { status: 500 })
+    console.error('Registration error:', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
